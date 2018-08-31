@@ -128,6 +128,7 @@ class TimeRanges(list):
         self.sort(key=lambda x: x[indx])
 
     def merge(self):
+        # Merge overlapping time ranges
         i = sorted(set([tuple(sorted(x)) for x in self]))
         if len(i) > 0:
             merged_ranges = [i[0]]
@@ -142,6 +143,7 @@ class TimeRanges(list):
             self.__init__(merged_ranges)
 
     def merge_min_separation(self, years=None, months=None, days=None, hours=None, minutes=None, seconds=None):
+        # Merge time ranges if space between them is less a given number years, months, days, etc
         dct = locals()
         keywords = {}
         for key in dct:
@@ -165,15 +167,19 @@ class TimeRanges(list):
         self.merge()
 
     def get_starts(self):
+        # get start times of all times ranges
         return [dt_range[0] for dt_range in self]
 
     def get_ends(self):
+        # get end times of all times ranges
         return [dt_range[1] for dt_range in self]
 
     def get_centers(self):
+        # get midpoints of all times ranges 
         return [(start + td(seconds=(end - start).total_seconds() / 2.0)) for start, end in self]
 
     def shift_starts(self, years=None, months=None, days=None, hours=None, minutes=None, seconds=None):
+        
         dct = locals()
         keywords = {}
         for key in dct:
